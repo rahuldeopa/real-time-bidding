@@ -9,6 +9,8 @@ services:
       MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
 
   kafka:
     image: bitnami/kafka
@@ -34,4 +36,10 @@ services:
     depends_on:
       - db
       - kafka
+    environment:
+      - DATABASE_HOST=db
+      - DATABASE_PORT=3306
+      - KAFKA_BROKER=kafka:9092
+    volumes:
+      - .:/app
       

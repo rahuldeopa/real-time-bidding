@@ -3,4 +3,6 @@ uvicorn
 sqlalchemy
 pydantic
 kafka-python
-pymysql
+PyMySQL[rsa]
+cryptography
+mysql-connector-python
