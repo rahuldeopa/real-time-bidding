@@ -1,45 +1,68 @@
 version: '3.8'
+
 services:
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: auction_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./my.cnf:/etc/mysql/conf.d/my.cnf
-
-  kafka:
-    image: bitnami/kafka
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    ports:
-      - "9092:9092"
-
-  zookeeper:
-    image: bitnami/zookeeper
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: yes
-    ports:
-      - "2181:2181"
-
-  app:
+  backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./backend
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app
     depends_on:
       - db
-      - kafka
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=3306
-      - KAFKA_BROKER=kafka:9092
+      - DATABASE_URL=mysql://user:password@db:3306/mydb
+
+  db:
+    image: mysql:8.0 
+    environment:
+      MYSQL_DATABASE: mydb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: rootpassword
     volumes:
-      - .:/app
-      
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - bidding-network
+
+  kafka:
+    image: wurstmeister/kafka
+    environment:
+      KAFKA_ADVERTISED_LISTENERS: INSIDE://kafka:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL: PLAINTEXT
+      KAFKA_LISTENERS: INSIDE://0.0.0.0:9093,OUTSIDE://localhost:9092
+      KAFKA_LISTENER_PORT: 9092
+      KAFKA_LISTENER_NAME_OUTSIDE: OUTSIDE
+      KAFKA_LISTENER_NAME_INSIDE: INSIDE
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_INTER_BROKER_LISTENER_NAME: INSIDE  # Ensure this is set correctly
+    ports:
+      - "9092:9092"
+    networks:
+      - bidding-network
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    networks:
+      - bidding-network
+
+volumes:
+  db_data:
+
+networks:
+  bidding-network:
+    driver: bridge

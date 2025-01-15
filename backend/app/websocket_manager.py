@@ -1,6 +1,7 @@
 from fastapi import WebSocket
+from typing import List
 
-class ConnectionManager:
+class WebSocketManager:
     def __init__(self):
         self.active_connections = []
 
@@ -11,8 +12,9 @@ class ConnectionManager:
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
 
-    async def broadcast(self, message: dict):
+    async def broadcast_bid_update(self, bid_data):
         for connection in self.active_connections:
-            await connection.send_json(message)
+            await connection.send_json(bid_data)
 
-manager = ConnectionManager()
+manager = WebSocketManager()
+
