@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.models import Bid, Auction
 from .schemas import BidSchema
 from .database import SessionLocal, engine
-from .kafka_producer import publish_bid
+from app.kafka_producer import publish_bid
 from .websocket_manager import manager
 from app.database import SessionLocal, engine
 
