@@ -9,11 +9,11 @@ function App() {
 
   useEffect(() => {
     // Fetch auction data from backend (or use mock data)
-    fetch('http://localhost:8000/auctions')
+    fetch('http://backend:8000/auctions')
       .then((response) => response.json())
       .then((data) => setAuctions(data));
 
-    const socket = new WebSocket('ws://localhost:8000/ws/bid_updates');
+    const socket = new WebSocket('ws://backend:8000/ws/bid_updates');
     
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);

@@ -1,13 +1,106 @@
-body {
+/* General Reset */
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* Body Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fb; /* Light background for a soft appearance */
+  color: #333; /* Dark text for better contrast */
+  line-height: 1.6; /* Better line spacing */
+  padding: 20px; /* Adding padding for content spacing */
+  min-height: 100vh; /* Ensure body takes up at least full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Center content */
+main {
+  max-width: 1200px; /* Limit content width */
+  margin: 0 auto; /* Center content horizontally */
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Roboto', sans-serif;
+  color: #2d3748; /* Darker color for headings */
+  margin-bottom: 1rem;
+}
+
+/* Code Block Styling */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Courier New', monospace;
+  background-color: #2d2d2d; /* Dark background for code */
+  color: #f5f5f5; /* Light text color */
+  padding: 4px 8px; /* Small padding for code block */
+  border-radius: 4px; /* Rounded corners */
+  font-size: 1.1em;
+}
+
+/* Highlight inline code */
+code.inline {
+  background-color: #e0e0e0; /* Light gray for inline code */
+  color: #2d2d2d; /* Darker text for readability */
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: #3182ce; /* Blue links */
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #2b6cb0; /* Slightly darker blue on hover */
+}
+
+/* Button Style */
+button {
+  background-color: #3182ce;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2b6cb0;
+}
+
+/* Containers */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 100%;
+  max-width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Footer */
+footer {
+  background-color: #2d3748; /* Dark footer background */
+  color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
 }
